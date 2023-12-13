@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:11.1
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=bitnami
+      - MARIADB_USER=bn_myapp
+      - MARIADB_PASSWORD=pass
+      - MARIADB_DATABASE=bitnami_myapp
+    volumes:
+      - 'mariadb_data:/bitnami'
+  myapp:
+    image: docker.io/bitnami/laravel:10
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USERNAME=bn_myapp
+      - DB_DATABASE=bitnami_myapp
+    volumes:
+      - './my-project:/app'
+    depends_on:
+      - mariadb
+  phpmyadmin:
+    image: docker.io/bitnami/phpmyadmin:5
+    ports:
+      - '80:8080'
+      - '443:8443'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
