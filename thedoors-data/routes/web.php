@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+//Route::apiResource('items', ItemsController::class);
+//Route::apiResource('categories', CategoriesController::class);
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+
+Route::get('/shop', function () {
+    return view('shop');
+});
+
+Route::get('/admin', function () {
+    return view('admin');
 });
