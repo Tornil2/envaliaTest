@@ -16,9 +16,9 @@ class ItemsController extends Controller
     {
         $category = $request->input("category");
         $admin = $request->input("admin");
-        $items = Items::where('category_id','=',$category)->paginate(15);
+        $items = Items::where('category_id','=',$category)->paginate(16);
 
-        return $items->appends(['category'=>$category],['admin'='1']);
+        return $items->appends(['category'=>$category]);
     }
 
     public function store(Request $request)
@@ -53,9 +53,15 @@ class ItemsController extends Controller
     public function show($id)
     {
         $items = Items::find($id);
-        $items->price = Money::EUR($items->price)->subtract(Money::EUR(1));
-        $items->dimension = array("X"=>explode("x", $items->dimension)[0],"Y"=>explode("x", $items->dimension)[1],"Z"=>explode("x", $items->dimension)[2]);
-        $items->images = json_decode($items->images);
+        if(isset($items->price)){
+            $items->price = Money::EUR($items->price)->subtract(Money::EUR(1));
+        }
+        if(isset($items->dimension) && count(explode("x", $items->dimension)) == 3){
+            $items->dimension = array("X"=>explode("x", $items->dimension)[0],"Y"=>explode("x", $items->dimension)[1],"Z"=>explode("x", $items->dimension)[2]);
+        }
+        if(isset($items->images)){
+            $items->images = json_decode($items->images);
+        }
         
         return $items;
     }

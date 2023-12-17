@@ -26,7 +26,7 @@ class Items extends Model
         'updated_at'
     ];
 
-    public function category()
+    public function belongs()
     {
         // return $this->belongsTo('Model', 'foreign_key', 'owner_key'); 
         return $this->belongsTo('App\Models\Categories','category_id','id');

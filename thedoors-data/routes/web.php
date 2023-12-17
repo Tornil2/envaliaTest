@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
+use Ixudra\Curl\Facades\Curl;
+use Illuminate\Http\Request;
+use App\Models\Items;
+use App\Http\Controllers\ItemsController;
+use App\Models\Categories;
+use App\Http\Controllers\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 
 //Route::apiResource('items', ItemsController::class);
 //Route::apiResource('categories', CategoriesController::class);
+
+
 
 Route::get('/', function () {
     return view('index');
