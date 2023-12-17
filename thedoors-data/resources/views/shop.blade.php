@@ -21,6 +21,18 @@
         top: 1.5px;
     }
 
+    #loginButton{
+        position: fixed;
+        right: 1em;
+        top: 0.75em;
+        padding: 0;
+        cursor:pointer;
+    }
+
+    #loginButton > *{
+        pointer-events:none;
+    }
+
     #container_shop {
         display: grid;
         grid-gap: 2em;
@@ -46,6 +58,32 @@
         overflow: hidden;
     }
 
+    .cross-delete {
+        color: var(--bs-danger);
+        rotate: 45deg;
+        aspect-ratio: 1/1;
+        display: inline-grid;
+        height: 1.5em;
+        text-align: center;
+        border-radius: 100%;
+        border: 1px solid;
+        align-content: center;
+        position: absolute;
+        right: 01em;
+        background-color: var(--bs-danger-bg-subtle);
+        cursor: pointer;
+    }
+
+    .cross-delete:hover {
+        scale: 1.125;
+    }
+
+    .card > .cross-delete {
+        top: 1em;
+    }
+    .card > img {
+        aspect-ratio: 1 / 1;
+    }
     @media (max-width: 991px){
         #container_shop {
             grid-template-columns: repeat(3, 1fr);
@@ -80,21 +118,10 @@
     }
 </style>
 
-<!--
-http://localhost:8000/storage/img/The_Doors_Logo.png
--->
-
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-2 position-fixed z-2 w-100">
     <a class="navbar-brand" href="/index"><img src="/storage/img/The_Doors_Logo.png" width="128" height="32" class="d-inline-block align-top" alt="/storage/img/The_Doors_Logo.png"></a>
-    <div class="navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <div class="form-group mx-sm-3 mb-2 d-inline-block">
-                    <input type="text" class="form-control" id="newCategoryInput" placeholder="NUEVA CATEGORÍA">
-                </div>
-                <button type="submit" class="btn btn-primary mb-2" id="newCategoryButton">✚</button>
-            </li>
+    <div class="navbar-collapse">
+        <ul class="navbar-nav" id="navbarNavDropdown">
             <li class="nav-item dropdown" id="categories_dropdown">
                 <a class="nav-link dropdown-toggle disabled" href="#" id="dropdownCategories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 CATEGORÍAS
@@ -105,6 +132,10 @@ http://localhost:8000/storage/img/The_Doors_Logo.png
         </ul>
     </div>
 </nav>
+<div class="z-2" id="loginButton">
+    <input type="checkbox" class="btn-check" id="inputLogin" autocomplete="off" checked="false">
+    <label class="btn btn-primary" for="inputLogin">INICIAR SESIÓN</label>
+</div>
 
 <div class="container overflow-hidden" id="container_shop">
     
@@ -112,41 +143,111 @@ http://localhost:8000/storage/img/The_Doors_Logo.png
 
 <script>
 
-    let admin = true
-
+    const ADMIN_BUTTON = document.querySelector('#inputLogin')
+    
+    let admin = localStorage.getItem("admin") == 'true'
+    toggleAdmin(false)
+    ADMIN_BUTTON.parentElement.addEventListener("click",()=>{toggleAdmin(true)})
+    
     start()
 
     async function start(){
         let category = getCategory()
         let categories = await getData("api/categories")
         let items = await getData("api/items",category)
-        console.log("categories",categories,"items",items)
         layoutCategories(categories)
         layoutItems(items)
     }
 
     async function getData(apiUrl,category){
-        console.log(category)
         let url = category == undefined ? `http://127.0.0.1:8000/${apiUrl}` : `http://127.0.0.1:8000/${apiUrl}?category=${category}`
         let data = await fetch(url).then(response=>{return response.json()})
         return data
     }
 
+    async function setData(apiUrl,data,method){
+        let url = `http://127.0.0.1:8000/${apiUrl}`
+        let request
+        if(method == "DELETE"){
+            request = await fetch(url,{method:method})
+        }else if(method == "PUT" || method == "POST"){
+            request = await fetch(url,{method:method,headers:{"Content-Type": "application/json"},body:JSON.stringify(data)}).then(response=>{return response.json()})
+        }
+        
+        return request
+    }
+
+    function toggleAdmin(reload){
+        if(admin === true){
+            ADMIN_BUTTON.checked = false
+            ADMIN_BUTTON.nextElementSibling.textContent = 'CERRAR SESIÓN'
+            if(reload){
+                admin = false
+                localStorage.setItem("admin", false);
+            }
+        }else if (admin === false){
+            ADMIN_BUTTON.checked = true
+            ADMIN_BUTTON.nextElementSibling.textContent = 'INICIAR SESIÓN'
+            if(reload){
+                admin = true
+                localStorage.setItem("admin", true);
+            }
+        }
+        if(reload){
+            location.reload();
+        }
+    }
+
     function layoutCategories(categories){
         const DROP_MENU = document.querySelector('#categories_dropdown > .dropdown-menu')
         const DROP_BUTTON = document.querySelector('#dropdownCategories')
+        const NAB_BAR = document.querySelector('#navbarNavDropdown')
         
         let category = getCategory() - 1
         categories.forEach(cat=>{
-            DROP_MENU.insertAdjacentHTML('beforeend',`<a class="dropdown-item" href="?category=${cat.id}">${cat.name}</a>`)
+            DROP_MENU.insertAdjacentHTML('beforeend',`<a class="dropdown-item" href="/shop?category=${cat.id}" category="${cat.id}">${cat.name}</a>`)
         })
         DROP_BUTTON.classList.remove('disabled')
         if(categories.length > 0){
-            console.log(categories,category,categories[category].name)
-            DROP_BUTTON.innerText = categories[category].name
+            category++
+            if(categories.find(({ id }) => id == category) != undefined){
+                DROP_BUTTON.innerText = categories.find(({ id }) => id == category).name
+            }
         }
         if(admin){
-            //DROP_MENU.insertAdjacentHTML('beforeend',`<span class="dropdown-item">NUEVA CATEGORÍA</span>`)
+            NAB_BAR.insertAdjacentHTML('afterbegin',`\
+            <li class="nav-item">\
+                <div class="form-group mx-sm-3 mb-2 d-inline-block">\
+                    <input type="text" class="form-control" id="newCategoryInput" placeholder="NUEVA CATEGORÍA">\
+                </div>\
+                <button type="submit" class="btn btn-primary mb-2" id="newCategoryButton">✚</button>\
+            </li>`)
+            const NEW_CATEGORY_BUTTON = document.querySelector('#newCategoryButton')
+            const CATEGORIES = document.querySelectorAll(".dropdown-item[category]")
+            CATEGORIES.forEach(category=>{
+                category.insertAdjacentHTML('beforeend','<div class="cross-delete">✚</div>')
+                const DELETE = category.querySelector('.cross-delete')
+                DELETE.addEventListener("click",async (event)=>{
+                    event.stopPropagation()
+                    event.preventDefault()
+                    category = getCategory()
+                    const THIS_CATEGORY = DELETE.parentElement.attributes.category.value
+                    const DATA = {"id":THIS_CATEGORY}
+                    const RESPONSE = await setData(`api/categories/${THIS_CATEGORY}`,DATA,"DELETE")
+                    if(THIS_CATEGORY == category){
+                        window.open(`/shop`,'_self')
+                    }else{
+                        DELETE.parentElement.remove()
+                    }
+                })
+            })
+            NEW_CATEGORY_BUTTON.addEventListener("click",async ()=>{
+                const NEW_CATEGORY_INPUT = document.querySelector('#newCategoryInput')
+                const DATA = {"name":NEW_CATEGORY_INPUT.value}
+                const RESPONSE = await setData("api/categories",DATA,"POST")
+                category = RESPONSE.id
+                window.open(`/shop?category=${category}`,'_self')
+            })
         }
     }
 
@@ -161,10 +262,9 @@ http://localhost:8000/storage/img/The_Doors_Logo.png
             const ITEM_NAME = item.name
             const ITEM_DESCRIPTION = item.description
             const ITEM_PRICE = item.price
-            const ITEM_IMAGE = JSON.parse(JSON.parse(item.images))
-            console.log("ITEM_IMAGES",ITEM_IMAGE)
+            const ITEM_IMAGE = item.images == "[]" ? '/storage/img/no-img.png' : JSON.parse(JSON.parse(item.images))
             CONTAINER_SHOP.insertAdjacentHTML('beforeend',`\
-            <div class="card text-center">\
+            <div class="card text-center" items="${item_id}">\
                 <img src="${ITEM_IMAGE}" class="card-img-top" alt="${ITEM_IMAGE}">\
                 <div class="card-body">\
                     <h5 class="card-title">${ITEM_NAME}</h5>\
@@ -174,20 +274,50 @@ http://localhost:8000/storage/img/The_Doors_Logo.png
             </div>`)
         })
         if(admin){
-            CONTAINER_SHOP.insertAdjacentHTML('beforeend',`\
-            <div class="card text-center">\
-                <img src="/storage/img/nuevo.png" class="card-img-top" alt="/storage/img/nuevo.png">\
-                <div class="card-body">\
-                    <h5 class="card-title">NUEVO OBJETO</h5>\
-                    <p class="card-text text-start">DESCRIPCIÓN</p>\
-                    <a href="/item?id=${item_id+1}" class="btn btn-primary">CREAR OBJETO</a>\
-                </div>\
-            </div>`)
+            const CARDS_ITEMS = document.querySelectorAll('.card')
+            CARDS_ITEMS.forEach(card=>{
+                card.insertAdjacentHTML('afterbegin','<div class="cross-delete">✚</div>')
+                const DELETE = card.querySelector('.cross-delete')
+                DELETE.addEventListener("click",async (event)=>{
+                    category = getCategory()
+                    const THIS_ITEM = card.attributes.items.value
+                    const DATA = {"id":THIS_ITEM}
+                    const RESPONSE = await setData(`api/items/${THIS_ITEM}`,DATA,"DELETE")
+                    DELETE.parentElement.remove()
+                })
+            })
+            if(category != 0){
+                CONTAINER_SHOP.insertAdjacentHTML('beforeend',`\
+                <div class="card text-center">\
+                    <img src="/storage/img/nuevo.png" class="card-img-top" alt="/storage/img/nuevo.png">\
+                    <div class="card-body">\
+                        <h5 class="card-title">NUEVO OBJETO</h5>\
+                        <p class="card-text text-start">DESCRIPCIÓN</p>\
+                        <a class="btn btn-primary" id="newItemButton">CREAR OBJETO</a>\
+                    </div>\
+                </div>`)
+                const NEW_ITEM_BUTTON = document.querySelector('#newItemButton')
+                NEW_ITEM_BUTTON.addEventListener("click",async ()=>{
+                    const DATA = {
+                        "name":"NUEVO OBJETO",
+                        "category_id":category,
+                        "material":"MATERIAL",
+                        "price":"10000",
+                        "dimension":"90x200x9",
+                        "description":"DESCRIPCIÓN",
+                        "images":"[]",
+                        "armored":"0",
+                        "hidden":"0"
+                    }
+                    const RESPONSE = await setData("api/items",DATA,"POST")
+                    location.reload()
+                })
+            }
         }
     }
 
     function getCategory(){
-        let category 
+        let category = 0
         window.location.search.slice(1).split("&").forEach((search)=>{
             if(search.split("=")[0] == "category"){
                 category = search.split("=")[1]

@@ -12,35 +12,41 @@ class CategoriesController extends Controller
         return Categories::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $categories = new Categories;
+        $categories->name = $request->name;
+
+        $categories->save();
+
+        return $categories;
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Categories $categories)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Categories $categories)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Categories $categories)
+    
+    public function destroy($id)
     {
-        //
+        $categories = Categories::find($id);
+
+        if(is_null($categories))
+        {
+            return response()->json('No se ha encontrado la categoría',404);
+        }
+
+        $categories->delete();
+
+        return response()->noContent();
     }
 }

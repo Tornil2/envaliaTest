@@ -15,9 +15,7 @@ class ItemsController extends Controller
     public function index(Request $request)
     {
         $category = $request->input("category");
-        $admin = $request->input("admin");
         $items = Items::where('category_id','=',$category)->paginate(16);
-
         return $items->appends(['category'=>$category]);
     }
 

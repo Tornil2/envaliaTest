@@ -34,6 +34,6 @@ Route::get('/shop', function () {
     return view('shop');
 });
 
-Route::get('/admin', function () {
-    return view('admin');
+Route::get('/item', function () {
+    return view('item');
 });

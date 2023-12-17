@@ -10,18 +10,11 @@ class Categories extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'parent_id'
+        'name'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at'
     ];
-
-    public function belongs()
-    {
-        // return $this->belongsTo('Model', 'foreign_key', 'owner_key'); 
-        return $this->belongsTo('App\Models\Categories','parent_id','id');
-    }
 }

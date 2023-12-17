@@ -25,10 +25,5 @@ class Items extends Model
         'created_at',
         'updated_at'
     ];
-
-    public function belongs()
-    {
-        // return $this->belongsTo('Model', 'foreign_key', 'owner_key'); 
-        return $this->belongsTo('App\Models\Categories','category_id','id');
-    }
+    
 }

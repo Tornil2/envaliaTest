@@ -11,7 +11,9 @@
 
 <h1>@yield('title')</h1>
 
-
+<script>
+    window.open(`/shop`,'_self')
+</script>
 
 @yield('content')
 @yield('footer')
