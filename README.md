@@ -27,7 +27,11 @@ incluso puertas para castillos …).</p>
 <h2>Instrucciones de uso</h2>
 <ul>
   <li>Descargar repositorio</li>
-  <li>Ejecutar el comando "docker compose up"</li>
+  <li>Abrir una terminal en la raiz del repositorio</li>
+  <li>Ejecutar el comando "docker compose up -d"</li>
+  <li>Ejecutar el comando "docker exec envaliatest-theDoors-1 composer require moneyphp/money"</li>
+  <li>Ejecutar el comando "docker exec envaliatest-theDoors-1 php artisan migrate:refresh"</li>
+  <li>Ejecutar el comando "docker exec envaliatest-theDoors-1 php artisan storage:link"</li>
   <li>Entrar en <a href="http://localhost:8080">localhost:8080</a> para entrar a la base de datos mediante phpMyAdmin</li>
   <li>Entrar en <a href="http://localhost:8000/shop">localhost:8000/shop</a> para ver la mini APP de front</li>
 </ul>
