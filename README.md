@@ -28,6 +28,7 @@ incluso puertas para castillos …).</p>
 <ul>
   <li>Descargar repositorio</li>
   <li>Abrir una terminal en la raiz del repositorio</li>
+  <li>Ejecutar el comando "mv .\thedoors-data\enviroment.env .\thedoors-data\.env"</li>
   <li>Ejecutar el comando "docker compose up -d"</li>
   <li>Ejecutar el comando "docker exec envaliatest-theDoors-1 composer require moneyphp/money"</li>
   <li>Ejecutar el comando "docker exec envaliatest-theDoors-1 php artisan migrate:refresh"</li>
