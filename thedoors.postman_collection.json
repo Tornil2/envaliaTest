@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "c9dcc9cf-a8af-499b-99cd-aec9610b2348",
+		"name": "thedoors",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31818473"
+	},
+	"item": [
+		{
+			"name": "POST CATEGORIES",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Puertas acorazadas",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE CATEGORIES",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/categories/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"categories",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL CATEGORIES",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST ITEMS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Puerta de entrada metálica",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "material",
+							"value": "Acero",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "60000",
+							"type": "text"
+						},
+						{
+							"key": "dimension",
+							"value": "90x210x13",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Puerta de entrada metálica Saga Rústica, con apertura hacia la derecha, compuesta por marco de acero galvanizado, hoja de acero lacado imitación madera de roble viejo por ambas caras e interior aislante de espuma de poliuretano expandido, perfecta para proporcionar una seguridad garantizada a tu vivienda. Cuenta con cerradura de seguridad de 3 puntos de anclaje con 10 bulones, bisagras antipalanca, seguridad contra la perforación y bastidor de hoja. Incluye mirilla, pomo, manilla y cortavientos. Es resistente a la intemperie. Medidas: 90 x 210 x 10 cm (ancho x alto x espesor).\n\nAislamiento térmico y acústico superior. Resistente a la intemperie. Mirilla, pomo, manilla y cortavientos incluidos",
+							"type": "text"
+						},
+						{
+							"key": "images",
+							"value": "\"[\\\"https://media.adeo.com/marketplace/LMES/89159133/1845772.jpeg?width=650&height=650&format=jpg&quality=80&fit=bounds\\\",\\\"https://media.adeo.com/marketplace/LMES/89159133/1845277.png?width=650&height=650&format=jpg&quality=80&fit=bounds\\\"]\"",
+							"type": "text"
+						},
+						{
+							"key": "armored",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "hidden",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT ITEMS",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Puerta de entrada madera",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "material",
+							"value": "Madera",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "40000",
+							"type": "text"
+						},
+						{
+							"key": "dimension",
+							"value": "90x210x13",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Puerta de entrada madera Saga Rústica, con apertura hacia la derecha, compuesta por marco de acero galvanizado, hoja de acero lacado imitación madera de roble viejo por ambas caras e interior aislante de espuma de poliuretano expandido, perfecta para proporcionar una seguridad garantizada a tu vivienda. Cuenta con cerradura de seguridad de 3 puntos de anclaje con 10 bulones, bisagras antipalanca, seguridad contra la perforación y bastidor de hoja. Incluye mirilla, pomo, manilla y cortavientos. Es resistente a la intemperie. Medidas: 90 x 210 x 10 cm (ancho x alto x espesor).\n\nAislamiento térmico y acústico superior. Resistente a la intemperie. Mirilla, pomo, manilla y cortavientos incluidos",
+							"type": "text"
+						},
+						{
+							"key": "images",
+							"value": "\"[\\\"https://media.adeo.com/marketplace/LMES/89159133/1845772.jpeg?width=650&height=650&format=jpg&quality=80&fit=bounds\\\",\\\"https://media.adeo.com/marketplace/LMES/89159133/1845277.png?width=650&height=650&format=jpg&quality=80&fit=bounds\\\"]\"",
+							"type": "text"
+						},
+						{
+							"key": "armored",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "hidden",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/items/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL ITEMS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/items?category=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ITEMS",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/items/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
