@@ -305,7 +305,7 @@
                         "price":"10000",
                         "dimension":"90x200x9",
                         "description":"DESCRIPCIÓN",
-                        "images":JSON.stringify(JSON.stringify(["/storage/img/no-img.png"])),
+                        "images":"[]",
                         "armored":"0",
                         "hidden":"0"
                     }
